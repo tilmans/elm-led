@@ -17,9 +17,6 @@ updateFC colors =
     let
         shifted =
             List.drop 30 colors ++ List.take 30 colors
-
-        _ =
-            Debug.log "colors" (List.length shifted)
     in
     send
         ([ 0, 0, 0, 0 ]

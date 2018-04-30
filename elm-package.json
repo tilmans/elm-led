@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "summary": "Elm LED driver",
-  "repository": "",
+  "repository": "https://github.com/tilmans/elm-led.git",
   "license": "MIT",
   "source-directories": ["src/elm"],
   "exposed-modules": [],

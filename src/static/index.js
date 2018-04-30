@@ -13,6 +13,7 @@ ws.addEventListener("close", e => {
 var Elm = require("../elm/Main");
 const app = Elm.Main.embed(document.getElementById("main"));
 app.ports.send.subscribe(bytes => {
+  console.debug(bytes);
   if (ws.readyState == 1) {
     const packet = new Uint8Array(bytes);
     ws.send(packet.buffer);
