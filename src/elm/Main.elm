@@ -1,63 +1,61 @@
 module Main exposing (..)
+
+import Candy exposing (..)
+import Color exposing (..)
 import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events exposing ( onClick )
-
--- component import example
-import Components.Hello exposing ( hello )
+import Time exposing (..)
+import Time.DateTime as DT
 
 
--- APP
-main : Program Never Model Msg
-main =
-  Html.beginnerProgram { model = model, view = view, update = update }
+type alias Model =
+    Time
 
 
--- MODEL
-type alias Model = Int
+type Msg
+    = Tick Time
+
 
 model : Model
-model = 0
+model =
+    0
 
 
--- UPDATE
-type Msg = NoOp | Increment
+main : Program Never Model Msg
+main =
+    Html.program { init = init, view = view, update = update, subscriptions = subscriptions }
 
-update : Msg -> Model -> Model
+
+init : ( Model, Cmd Msg )
+init =
+    ( model, Cmd.none )
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.batch [ Time.every second Tick ]
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-  case msg of
-    NoOp -> model
-    Increment -> model + 1
+    case msg of
+        Tick time ->
+            let
+                s =
+                    Debug.log "Second" (time |> DT.fromTimestamp |> DT.second)
+
+                colors =
+                    List.range 0 59
+                        |> List.map
+                            (\i ->
+                                if s == i then
+                                    Color.red
+                                else
+                                    Color.black
+                            )
+            in
+            time ! [ updateFC colors ]
 
 
--- VIEW
--- Html is defined as: elem [ attribs ][ children ]
--- CSS can be applied via class names or inline style attrib
 view : Model -> Html Msg
 view model =
-  div [ class "container", style [("margin-top", "30px"), ( "text-align", "center" )] ][    -- inline CSS (literal)
-    div [ class "row" ][
-      div [ class "col-xs-12" ][
-        div [ class "jumbotron" ][
-          img [ src "static/img/elm.jpg", style styles.img ] []                             -- inline CSS (via var)
-          , hello model                                                                     -- ext 'hello' component (takes 'model' as arg)
-          , p [] [ text ( "Elm Webpack Starter" ) ]
-          , button [ class "btn btn-primary btn-lg", onClick Increment ] [                  -- click handler
-            span[ class "glyphicon glyphicon-star" ][]                                      -- glyphicon
-            , span[][ text "FTW!" ]
-          ]
-        ]
-      ]
-    ]
-  ]
-
-
--- CSS STYLES
-styles : { img : List ( String, String ) }
-styles =
-  {
-    img =
-      [ ( "width", "33%" )
-      , ( "border", "4px solid #337AB7")
-      ]
-  }
+    div [] [ text "Stuff is happening in the console" ]

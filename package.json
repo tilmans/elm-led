@@ -1,18 +1,15 @@
 {
-  "name": "elm-webpack-starter",
-  "description": "Webpack setup for writing Elm apps",
+  "name": "elm-leds",
+  "description": "Elm driving a FadeCandy",
   "version": "0.8.6",
   "license": "MIT",
-  "author": "Peter Morawiec",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/moarwick/elm-webpack-starter"
-  },
+  "author": "Tilman Schlenker",
   "scripts": {
     "start": "webpack-dev-server --hot --inline",
     "prebuild": "rimraf dist",
     "build": "webpack",
-    "reinstall": "npm i rimraf && rimraf node_modules && npm uninstall -g elm && npm i -g elm && npm i && elm package install"
+    "reinstall":
+      "npm i rimraf && rimraf node_modules && npm uninstall -g elm && npm i -g elm && npm i && elm package install"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.7",

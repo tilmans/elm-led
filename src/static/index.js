@@ -1,8 +1,21 @@
-// pull in desired CSS/SASS files
-require( './styles/main.scss' );
-var $ = jQuery = require( '../../node_modules/jquery/dist/jquery.js' );           // <--- remove if jQuery not needed
-require( '../../node_modules/bootstrap-sass/assets/javascripts/bootstrap.js' );   // <--- remove if Bootstrap's JS not needed 
+const ws = new WebSocket("ws://localhost:7890");
+ws.addEventListener("open", e => {
+  console.info("WS Opened", e);
+});
+ws.addEventListener("message", e => {
+  console.info("Message", e);
+});
+ws.addEventListener("close", e => {
+  console.info("WS Closed", e);
+});
 
 // inject bundled Elm app into div#main
-var Elm = require( '../elm/Main' );
-Elm.Main.embed( document.getElementById( 'main' ) );
+var Elm = require("../elm/Main");
+const app = Elm.Main.embed(document.getElementById("main"));
+app.ports.send.subscribe(bytes => {
+  if (ws.readyState == 1) {
+    const packet = new Uint8Array(bytes);
+    ws.send(packet.buffer);
+    ws.send(packet.buffer);
+  }
+});
